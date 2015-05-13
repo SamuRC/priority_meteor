@@ -1,0 +1,367 @@
+<template name="general">
+    <header>
+        <div class="container">
+            <div class="sidepanelLeft sidepanel">
+                <nav>
+                    <ul>
+                        <li><a href="#">Priority</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="sidepanelRight sidepanel">
+                <label>Bienvenido</label>
+                <span id="user"></span>
+                <a id="log_out" href="javascript:;">Logout</a>
+            </div>
+        </div>
+    </header>
+    <div class="main-container">
+        <div class="body-container">
+            <div id="body-container-header">
+                <div id="body-container-options">
+                    <a href="#"><i class="icomoon-pie"></i></a>
+                    <a href="#"><i class="icomoon-cog"></i></a>
+                </div>
+            </div>
+            <div id="resume">
+                <div class="resume-rows">
+                    <div class="resume-row first-row">
+                        <div style="background-position-x: -3px !important;" class="resume-row-item left"></div>
+                        <div id="resume-info" class="resume-row-item">
+                            <div class="left">
+                                <img src="img/movistar.jpg" class="img-polaroid">
+                            </div>
+                            <div class="right">
+                                <h3>Movistar</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed semper dui a nibh posuere gravida.</p>
+                            </div>
+                        </div>
+                        <div id="cups-info" class="resume-row-item right">
+                            <div class="cups-info-container">
+                                <div class="cup-info right">
+                                    <div>
+                                        <p>Cupones Redimidos</p>
+                                    </div>
+                                </div>
+                                <div class="cup-number right">
+                                    <span id="cupones-redimidos"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="resume-row second-row">
+                        <div class="resume-row-item left">
+                            <h1>0</h1>
+                            <p>Suscriptores</p>
+                            <p>+0 Suscriptores este mes</p>
+                        </div>
+                        <div id="resume-map" class="resume-row-item right"></div>
+                        <div class="stats">
+                                <div class="chart">
+                                <canvas id="poststats" width="250" height="250" style="width: 250px; height: 250px;"></canvas>
+                                    <ul class="data">
+                                        <li><span class="ready">{{activos}}</span> Activas</li>
+                                        <li><span class="pending">{{programados}}</span> Programadas</li>
+                                        <li><span class="draft">{{pasados}}</span> Pasadas</li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="data-search">
+                {{>campanhas}}
+            </div>
+            <div id="data-edit">
+                {{>campanha_frm}}
+            </div>
+        </div>
+        <div class="avgrund-cover"></div>
+    </div>
+    <div class="global-menus">
+        <aside id="data-edit-saved" class="avgrund-popup">
+            <h3>Guardado</h3>
+            <p>La campaña fue guardada exitosamente.</p>
+            <div class="options">
+                <button onclick="javascript:closeSaveDialog();" class="btn-success">Cerrar</button>
+            </div>
+        </aside>
+        <aside id="data-edit-saved-problem" class="avgrund-popup">
+            <h3>Ingrese datos correctos</h3>
+            <p>Al parecer los datos ingresados no fueron correctos, ingreselos nuevamente.</p>
+            <div class="options">
+                <button onclick="javascript:closeDialog();" class="btn-success">Cerrar</button>
+            </div>
+        </aside>
+        <aside id="data-edit-saved-problem-date" class="avgrund-popup">
+            <h3>Ingreso de fecha incorrectas</h3>
+            <p>Al parecer ingreso un rango de fechas incorrectas, por favor ingreselas correctamente.</p>
+            <div class="options">
+                <button onclick="javascript:closeDialog();" class="btn-success">Cerrar</button>
+            </div>
+        </aside>
+        <aside id="data-edit-add-promo" class="avgrund-popup">
+            <h3> Añadir Promoción</h3>
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label for="name" class="control-label">Nombre</label>
+                    <div class="controls">
+                        <a href="#" id="nombre" data-type="text" data-emptytext="Ingrese un nombre" class="editable-enabled"></a>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="fromDate" class="control-label">Fecha de Inicio</label>
+                    <div class="controls">
+                        <a href="#" id="fromDate" data-type="date" data-emptytext="Ingrese una fecha de Inicio" class="editable-enabled"></a>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="toDate" class="control-label">Fecha Fin</label>
+                    <div class="controls">
+                        <a href="#" id="toDate" data-type="date" data-emptytext="Ingrese una fecha de Fin" class="editable-enabled"></a>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="promoType" class="control-label">Tipo de Promocion</label>
+                    <div class="controls">
+                        <a href="#" id="promoType" data-type="select" data-title="Seleccione Tipo de promocion"></a>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="cantidad" class="control-label">Cantidad de cupones</label>
+                    <div class="controls">
+                        <a href="#" id="cantidad" data-type="number" data-emptytext="Ingrese una cantidad de cupones" class="editable-enabled"></a>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="desripcion" class="control-label">Descripcion de la promocion</label>
+                    <div class="controls">
+                        <a href="#" id="descripcion" data-type="textarea" data-emptytext="Ingrese una descripcion" class="editable-enabled"></a>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="mensaje" class="control-label">Mensaje de la promocion<br>(Texto que se enviara)</label>
+                    <div class="controls">
+                        <a href="#" id="mensaje" data-type="textarea" data-emptytext="Ingrese un mensaje" class="editable-enabled"></a>
+                    </div>
+                </div>
+                <div class="control-group options">
+                    <div class="controls">
+                        <button onclick="add_promo(); closeDialog();" class="btn-success">Añadir</button>
+                        <button onclick="javascript:closeDialog();" class="btn-error">Cerrar</button>
+                    </div>
+                </div>
+            </form>
+        </aside>
+        <aside id="data-edit-confirm-delete" class="avgrund-popup">
+            <div class="confirm">
+                <h3>Desea eliminar la promocion?</h3>
+                <div style="padding-top:20px;" class="options">
+                    <button onclick="delete_promo(); showNotificationDialog();" class="btn-danger">Eliminar</button>
+                    <button onclick="javascript:closeDialog();" class="btn-success">Cancear</button>
+                </div>
+            </div>
+            <div class="notification">
+                <h3>Promocion eliminada</h3>
+                <p>La promocion fue eliminada satisfactoriamente</p>
+                <div class="options">
+                    <button onclick="javascript:closeConfirmPromoDeleteDialog();" class="btn-success">Aceptar</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+</template>
+
+<template name="campanhas">
+    <div class="data-search-controls">
+        <div class="data-filters left">
+            <label class="checkbox inline">Listar:</label>
+            <label class="checkbox inline">Activo<input class="compaign_filter" type="checkbox" id="inlinecheckbox1" value="1" checked></label>
+            <label class="checkbox inline">Programado<input class="compaign_filter" type="checkbox" id="inlinecheckbox2" value="2" checked></label>
+            <label class="checkbox inline">Pasado<input class="compaign_filter" type="checkbox" id="inlinecheckbox3" value="3" checked></label>
+        </div>
+        <div class="data-search-box right">
+            <div class="form-search">
+                <div class="input-append">
+                    <input id="word" type="text" class="span2 search-query">
+                    <button id="search_campaign" type="button" class="btn">Búsqueda</button>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="data-search-results">
+        <div class="data-search-results-list">
+            {{#each items}}
+                <a id={{_id}} href="#data-edit" class="data-search-result-item left span4 view_camp">
+                      <div class="data-search-result-item-header">
+                         <h4>{{nombre}}</h4>
+                     </div>
+                     <div class="data-search-result-item-body">
+                         {{#if image}}
+                            <img src="{{cfsFileUrl "defaultHandler" fileId=image.token collection="filesFS"}}" class="img-polaroid">
+                         {{else}}
+                            <img src="http://lorempixel.com/g/100/100" class="img-polaroid">
+                         {{/if}}
+                         <p>{{descripcion}}</p> 
+                     </div>
+                     <div class="data-search-result-item-tags">
+                        {{#each tags}}
+                        <span class="tag">{{this}}</span>
+                        {{/each}}
+                    </div>
+                </a>
+        {{/each}}
+    </div>
+</div>
+</template>
+
+
+<template name="campanha_frm">
+    <div class="data-edit-controls">
+        <div class="data-edit-options right">
+            <button type="submit" class="btn btn-nuevo btn-primary data-edit-options-edit">Crear</button>
+            <button id="btn-save" type="submit" class="btn btn-save btn-success data-edit-options-edit">Guardar</button>
+            <button type="button" class="btn btn-cancel btn-danger data-edit-options-edit">Cancelar</button>
+        </div>  
+    </div>
+    <div class="data-edit-info">
+        <div class="data-edit-info-title">
+            <h3>Campaña:</h3>
+            <a href="#" id="nombreCampanha" data-type="text" data-placeholder="Ingrese campana" data-inputclass="input-xlarge" data-value="" class="editable-click" data-emptytext="Ingrese un nombre de campana"></a>
+        </div>
+        <div class="data-edit-info-related" hidden="hidden">
+            <div class="data-edit-info-related-column">
+                <div class="control-group">
+                    <label for="fechaInicio" class="control-label">Fecha de inicio</label>
+                    <div class="controls">
+                        <a href="#" id="fechaInicio" data-type="date" data-value="" class="editable-click" data-emptytext="Seleccione fecha de inicio"></a>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="fechaFin" class="control-label">Fecha de fin</label>
+                    <div class="controls">
+                        <a href="#" id="fechaFin" data-type="date" data-value="" class="editable-click" data-emptytext="Seleccione Fecha de fin"></a>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="imagen" class="control-label">Imagen de Campaña</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input id="imagen" type="text" placeholder="Choose File" disabled="disabled" class="input-medium" ><span class="fileUpload btn btn-success"><i class="icon-plus icon-white"></i><span>Seleccionar</span>
+                            <input id="imagen-hidden" type="file" class="upload" name="files">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width:33% !important;" class="data-edit-info-related-column">
+                <div class="control-group">
+                    <label class="control-label">Descripcion</label>
+                    <div class="controls">
+                        <a href="#" id="descripcion" data-type="textarea" data-value="" class="editable-click" data-emptytext="Ingrese una descripción"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="data-edit-info-related-column">Tags
+                <div class="control-group">
+                    <label class="control-label">
+                        <div class="controls tagsWrapper span3">
+                            <input id="tag" type="text" placeholder="Ingrese Tags">
+                            <div id="total_tags"></div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="data-edit-advanced" hidden="hidden">
+        <div class="data-edit-advanced-map">
+            {{#constant}}
+            <div id="map_canvas" ondrop="drop_map(event)" ondragover="allowDrop(event)"></div>
+            {{/constant}}
+        </div>
+        <div class="data-edit-advanced-promos">
+            <div class="box-promos promo-container">
+                <div class="promo-chooser">
+                    <div class="box-title">
+                        <h3>Promociones</h3>
+                    </div>
+                    <div id="total_promos" class="box-promos-body"></div>
+                    <div class="box-options">
+                        <button type="button" onclick="javascript:openAddPromoDialog()" class="btn btn-success">Añadir</button>
+                    </div>
+                </div>
+                <div hidden="hidden" class="promo-editor">
+                    <form action="#" class="form-horizontal">
+                        <fieldset>
+                            <legend>Edición de Promocion</legend>
+                            <div class="control-group">
+                                <label for="name" class="control-label">Nombre</label>
+                                <div class="controls">
+                                    <a href="#" id="name" data-type="text" data-emptytext="Ingrese un nombre" class="editable-enabled"></a>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label for="fromDate" class="control-label">Fecha de Inicio</label>
+                                <div class="controls">
+                                    <a href="#" id="fechaInicio" data-type="date" data-emptytext="Seleccione fecha de inicio" class="editable-enabled"></a>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label for="toDate" class="control-label">Fecha Fin</label>
+                                <div class="controls">
+                                    <a href="#" id="fechaFin" data-type="date" data-emptytext="Seleccione fecha de fin" class="editable-enabled"></a>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label for="toMessage" class="control-label">SMS Text</label>
+                                <div class="controls">
+                                    <a href="#" id="descripcion" data-type="textarea" data-emptytext="Ingrese un mensaje" class="editable-enabled"></a>
+                                </div>
+                            </div>
+                            <div class="control-group options">
+                                <div style="text-align: right;" class="controls">
+                                    <button class="btn btn-success save-promo-editor" title="Guardar"><i class="icon-ok"></i></button>
+                                    <button class="btn btn-danger delete-promo-editor" title="Eliminar"><i class="icon-trash"></i></button>
+                                    <button class="btn btn-primary close-promo-editor" title="Cancelar"><i class=" icon-ban-circle"></i></button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- DEPRECATED -->
+<template name="login">
+<div id="indexcont" class="container"><h1>Priority</h1><form id="login_form" role="form" action="/" method="POST"><!--<form role='form' action="#" method=""> --><div class="form-group"><label for="user">Usuario:</label><input id="login-user" type="text" name="user" placeholder="Ingrese usuario" class="form-control required-input" ><div style="position: relative; top: -35px; left: 228px; display: none;" class="alert alert-error"><strong>Campo Requerido!</strong></div></div><div class="form-group"><label for="pass">Contraseña:</label><input id="login-password" type="password" name="pass" placeholder="Ingrese contraseña" class="form-control required-input"><div style="position: relative; top: -35px; left: 228px; display: none;" class="alert alert-error"><strong>Campo Requerido!</strong></div></div><input id="doer"type="submit" value="Log in" class="btn btn-success offset2"></form><div id="login_failed" style="width: 268PX;text-align: center;margin-left: -50px;display:none;" class="alert alert-error"><strong>Contrasena invalida</strong></div></div>
+    <style>body {
+      padding-top: 50px;
+      padding-bottom: 20px;
+      background: url("../img/bg.png");
+      }
+      body div#indexcont {
+      background: #fff;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
+      border-radius: 20px;
+      width: 200px;
+      padding: 15px 80px 15px 60px;
+      margin: 80px auto;
+      height: 240px !important;
+      }
+      body div#indexcont h1 {
+      text-align: center;
+      }
+      body div#indexcont h1:before,
+      body div#indexcont h1:after {
+      content: '-';
+      }
+      h1,h2,h3,h4,h5 {font-weight: normal;}
+      .input-error{border-color: rgba(255, 0, 0, 0.8) !important; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(252, 14, 14, 0.6) !important;}
+      .form-group{height: 65px !important;}
+    </style>
+</template>
